@@ -10,5 +10,5 @@ Mention the output target file name could by any name
 Mention the Input filename on which action needs to be taken for Instance India_data.cpp or Spain_data.cpp
 for Each Target Run the command satisfying mentined condition using command: make
 
-Please Note that I have created two Initial Users with the username Akshet and Aman with tyoe student and faculty respectively.
+Please Note that I have created two Initial Users with the username Akshet and Aman with type student and faculty respectively.
 These two users are used for login into the library dashboard.
