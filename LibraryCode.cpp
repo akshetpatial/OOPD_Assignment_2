@@ -386,7 +386,7 @@ string borrow_journal_by_title(string& title,  vector<Journals*> data, User* use
 Book* addnewBooks(string& author,string& title,string& isbn, vector<Book*> book){
      for( Book* bk : book){
             if(bk->get_ISBN()==isbn){
-                cout<< "A book with "+isbn+ "is already present in the library: \n";
+                cout<< "A book with "+isbn+ " is already present in the library: \n";
                 exit(0);
             }
      }
