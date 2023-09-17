@@ -183,6 +183,64 @@ public:
     }
 };
 
+
+class OtherBorrowing {
+
+private:
+    string InstituteName;
+    string borrower;
+    string dueDate;
+    Book* item_1;
+    Journals* item_2;
+    Publications* item_3;
+
+public:
+    OtherBorrowing(Book* item,const string& InstituteName, string borrower, const string& dueDate){
+        this->item_1=item;
+        this->InstituteName = InstituteName ;
+        this->borrower = borrower;
+        this->dueDate = dueDate;
+    }
+     OtherBorrowing(Publications* item,const string& InstituteName, string borrower, const string& dueDate){
+        this->item_3 = item;
+        this->InstituteName = InstituteName ;
+        this->borrower = borrower;
+        this->dueDate = dueDate;
+    }
+
+    OtherBorrowing(Journals* item,const string& InstituteName, string borrower, const string& dueDate){
+        this->item_2 = item;
+        this->InstituteName = InstituteName ;
+        this->borrower = borrower;
+        this->dueDate = dueDate;
+    }
+
+    Book* getBook(){
+        return item_1;
+    }
+
+    Publications* getPublication(){
+        return item_3;
+    }
+
+    Journals* getJournal(){
+        return item_2;
+    }
+
+    string getBorrower(){
+        return borrower;
+    }
+
+    string getInstituteName(){
+      return InstituteName;
+    }
+
+    string getBorowwerName(){
+        return borrower;
+    }
+
+};
+
 class Library {
 
 private:
@@ -294,6 +352,22 @@ public:
 }
 
 
+   string borrow_books_by_title(string& title,  OtherBorrowing* bk){
+            if(bk->getBook()->get_title() == title){
+                if(bk->getBook()->get_count()!=0){
+                    borrower = bk->getBorrower();
+                    borrow_date = time(0);
+                    int due_date;
+                    bk->getBook()->set_count(bk->getBook()->get_count()-1);
+                return "You have successfully borrowed '" + bk->getBook()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getBook()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
+                 }
+            else{
+                return "Sorry! the Item named as '" + bk->getBook()->get_title()  + "' is already borrowed.\n";
+            }
+        }
+ return "Sorry! No Item was found.\n";
+}
+
 string borrow_books_by_Author(string& author,  vector<Book*> data, User* user){
          for( Book* bk : data){
             if(bk->get_authorname()==author){
@@ -361,6 +435,24 @@ string borrow_publication_by_title(string& title,  vector<Publications*> data, U
      return "Sorry! No Item was found.\n";
 }
 
+string borrow_publication_by_title(string& title,  OtherBorrowing* bk){
+        cout<<"title: "<<bk->getPublication()->get_title()<<"more: "<<title<<endl;
+            if(bk->getPublication()->get_title() == title){
+                cout<<"count: "<<bk->getPublication()->get_count()<<endl;
+                if(bk->getPublication()->get_count()!=0){
+                    borrower = bk->getBorrower();
+                    borrow_date = time(0);
+                    int due_date;
+                    bk->getPublication()->set_count(bk->getPublication()->get_count()-1);
+                return "You have successfully borrowed '" + bk->getPublication()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getPublication()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
+                 }
+            else{
+                return "Sorry! the Item named as '" + bk->getPublication()->get_title()  + "' is already borrowed.\n";
+            }
+        }
+         return "Sorry! No Item was found.\n";
+}
+
 string borrow_journal_by_title(string& title,  vector<Journals*> data, User* user){
          for( Journals* bk : data){
             if(bk->get_title()==title){
@@ -381,6 +473,22 @@ string borrow_journal_by_title(string& title,  vector<Journals*> data, User* use
             }
     }
      return "Sorry! No Item was found.\n";
+}
+
+string borrow_journal_by_title(string& title,  OtherBorrowing* bk){
+            if(bk->getJournal()->get_title() == title){
+                if(bk->getJournal()->get_count()!=0){
+                    borrower = bk->getBorrower();
+                    borrow_date = time(0);
+                    int due_date;
+                    bk->getJournal()->set_count(bk->getJournal()->get_count()-1);
+                return "You have successfully borrowed '" + bk->getJournal()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getJournal()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
+                 }
+            else{
+                return "Sorry! the Item named as '" + bk->getJournal()->get_title()  + "' is already borrowed.\n";
+            }
+        }
+         return "Sorry! No Item was found.\n";
 }
 
 Book* addnewBooks(string& author,string& title,string& isbn, vector<Book*> book){
@@ -517,8 +625,7 @@ int main() {
     vector<Journals*> journals  = readCSVFilejournals("journals - journals.csv");
     Library library;
     LibraryItem LibraryItem;
-
-
+    vector<OtherBorrowing*> loanitems;
     // 2 Initial Users
 
         library.register_user("Akshet","student"); 
@@ -543,6 +650,20 @@ int main() {
             return 0;
         }
 
+
+    Book* bk = new Book(1001, "Introduction to Programming","Akshet","98765", to_string(10));
+    Journals* jr = new Journals(2001,"IEEE somemthing on Computers");
+    Publications* pb = new Publications(3001,"The Guardian");
+
+    OtherBorrowing* item_1 = new OtherBorrowing(bk,"Indian Institue of Technology Delhi",currentuser->get_name(),Library::todaysdate());
+    OtherBorrowing* items_2 = new OtherBorrowing(jr,"Indian Institue of Technology kanpur",currentuser->get_name(),Library::todaysdate());
+    OtherBorrowing* items_3 = new OtherBorrowing(pb,"Indian Institue of Technology Mandi",currentuser->get_name(),Library::todaysdate());
+
+        loanitems.push_back(item_1);
+        loanitems.push_back(items_2);
+        loanitems.push_back(items_3);
+
+
         cout<<"Enter your choice from below options: "<<endl;
 		cout<<"Menu:"<<endl;
         cout<<"1. Add New User"<<endl;
@@ -551,6 +672,8 @@ int main() {
 		cout<<"4. Borrow Library Items"<<endl;
         cout<<"5. show all users"<<endl;
         cout<<"6. Add new Books"<<endl;
+        cout<<"7. Find Items from Other Institute"<<endl;
+        cout<<"8. Borrow Books From Other Universities"<<endl;
 		cout<<"0 to exit"<<endl;
         cout<<"Enter your Choice: "<<endl;
 		cin>>choice;
@@ -748,6 +871,53 @@ int main() {
                 getline(cin, isbn);
                 Book* newbook= library.addnewBooks(author,title,isbn,book);
                 book.push_back(newbook);
+            break; 
+        }
+         case 7 : 
+            {
+                cout<<"Find Items in Other Institue: "<<endl;
+                cout<<"Books"<<endl;
+                cout<<item_1->getBook()->get_details_Book()<<endl;
+                cout<<"Journals"<<endl;
+                cout<<items_2->getJournal()->get_details_Journal()<<endl;
+                cout<<"Publications"<<endl;
+                cout<<items_3->getPublication()->get_details_Publication()<<endl;
+            break; 
+        }
+        case 8 : 
+            {
+                cout<<"Lend Items from other Institute:\n";
+                cout<<"Press 1 if you want to Borrow a Book\n";
+                cout<<"Press 2 if you want to Borrow a Journal\n";
+                cout<<"Press 3 if you want to Borrow a Publication \n";
+                int check_2;
+                cin>>check_2;
+                if (cin.fail()){
+                   throw 505;
+                }
+                if(check_2 ==1){
+                    cout<<"Enter Title of the Book:"<<endl;
+                    string title;
+                    cin.ignore();
+                    getline(cin, title); 
+                    cout<<library.borrow_books_by_title(title,item_1);
+                }
+                else if(check_2 ==3){
+                    cout<<"Enter Title of the Publications:"<<endl;
+                    string title;
+                    cin.ignore();
+                    getline(cin, title); 
+                    cout<<library.borrow_publication_by_title(title,items_3);
+                }
+                else if(check_2 ==2){
+                    cout<<"Enter Title of the Journals:"<<endl;
+                    string title;
+                    cin.ignore();
+                    getline(cin, title); 
+                    cout<<library.borrow_journal_by_title(title,items_2);
+                }else{
+                    cout<<"Please Enter from the above numbers only"<<endl;
+                }
             break; 
         }
             case 0 :
