@@ -357,7 +357,6 @@ public:
                 if(bk->getBook()->get_count()!=0){
                     borrower = bk->getBorrower();
                     borrow_date = time(0);
-                    int due_date;
                     bk->getBook()->set_count(bk->getBook()->get_count()-1);
                 return "You have successfully borrowed '" + bk->getBook()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getBook()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
                  }
@@ -442,7 +441,6 @@ string borrow_publication_by_title(string& title,  OtherBorrowing* bk){
                 if(bk->getPublication()->get_count()!=0){
                     borrower = bk->getBorrower();
                     borrow_date = time(0);
-                    int due_date;
                     bk->getPublication()->set_count(bk->getPublication()->get_count()-1);
                 return "You have successfully borrowed '" + bk->getPublication()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getPublication()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
                  }
@@ -480,7 +478,6 @@ string borrow_journal_by_title(string& title,  OtherBorrowing* bk){
                 if(bk->getJournal()->get_count()!=0){
                     borrower = bk->getBorrower();
                     borrow_date = time(0);
-                    int due_date;
                     bk->getJournal()->set_count(bk->getJournal()->get_count()-1);
                 return "You have successfully borrowed '" + bk->getJournal()->get_title() + "'. and Due date is "+ to_string(1) + " months from "+todaysdate()+" with a delay of 7 days with below details: \n"+"->Unique Identifier: "+to_string(bk->getJournal()->get_identifier())+"\n->Borrower: "+bk->getBorowwerName()+"\n->Lending Institute: "+bk->getInstituteName()+"\n";
                  }
