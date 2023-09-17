@@ -140,6 +140,7 @@ class Journals : public LibraryItem {
     private:
     string title;
     int id;
+    string amount;
 
 public:
 Journals(){
@@ -149,12 +150,20 @@ Journals(){
     Journals(int id, string title)
         : LibraryItem(id, title) {}
 
+
+    Journals(int id, string title,string amount)
+        : LibraryItem(id, title), amount(amount){}
+
     string get_type() override {
          return "->Title: " + get_title();
     }
 
     string get_details_Journal(){
         return LibraryItem::get_details_Journal();
+    }
+
+    string get_amount(){
+        return amount;
     }
 };
 
@@ -585,7 +594,7 @@ vector<Publications*> readCSVFilepublications(const string& filename) {
 }
 
 
-vector<Journals*> readCSVFilejournals(const string& filename) {
+vector<Journals*> readCSVFilejournals(const string& filename,bool check) {
 
     vector<Journals*> data;
     Library library;
@@ -599,16 +608,23 @@ vector<Journals*> readCSVFilejournals(const string& filename) {
 
     string line;
     int identifier = 1;
+    string amount;
 
     while (getline(file, line)) {
         istringstream ss(line);
         string title;
         getline(ss, title, ',');
+        getline(ss, amount, ',');
          // Dynamically initialing the constructor 
+        if(!check){
         Journals* item = new Journals(identifier, title);
+        data.push_back(item);
+         }else{
+            Journals* item = new Journals(identifier, title,amount);
+        data.push_back(item);
+         }
         // cout<< "->Title: " + item->get_title()+"\n\n";
         // library.add_item(item);
-        data.push_back(item);
         identifier++; 
     }
     file.close();
@@ -619,7 +635,8 @@ int main() {
    
     vector<Publications*> publications  = readCSVFilepublications("master_publications_rank.csv");
     vector<Book*> book = readCSVFileBooks("goodbooks-10k_master_samples_books.csv");
-    vector<Journals*> journals  = readCSVFilejournals("journals - journals.csv");
+    vector<Journals*> journals  = readCSVFilejournals("journals - journals.csv",false);
+    
     Library library;
     LibraryItem LibraryItem;
     vector<OtherBorrowing*> loanitems;
@@ -671,6 +688,7 @@ int main() {
         cout<<"6. Add new Books"<<endl;
         cout<<"7. Find Items from Other Institute"<<endl;
         cout<<"8. Borrow Books From Other Universities"<<endl;
+        cout<<"9. Find Each Journal based on the budget"<<endl;
 		cout<<"0 to exit"<<endl;
         cout<<"Enter your Choice: "<<endl;
 		cin>>choice;
@@ -916,6 +934,35 @@ int main() {
                     cout<<"Please Enter from the above numbers only"<<endl;
                 }
             break; 
+        }
+        case 9:
+        {
+            vector<Journals*> journals_amount  = readCSVFilejournals("journals - journals.csv",true);   
+            string budget;
+            cout<<"Enter you Budget"<<endl;
+            cin>>budget;
+            vector<string> jls;
+            int count=0;
+            vector<string> amount;
+            for(Journals *ele : journals_amount){
+                if(stoi(ele->get_amount())<=stoi(budget)){
+                    jls.push_back(ele->get_details_Journal());
+                    amount.push_back(ele->get_amount());
+                    count++;
+                }
+            }
+            cout<<"So journal to subscribe every year: \n";
+            if(jls.size()==0)
+                cout<<"No Journal can be Subscribed for given budget\n";
+            else{
+                int index =0;
+                for(string ele : jls){
+                    cout<<"Amount: "<<amount.at(index)<<ele;
+                    index++;
+                }
+                cout<<"Total Number of Journals: "<<count<<endl;
+            }
+            break;
         }
             case 0 :
             {
