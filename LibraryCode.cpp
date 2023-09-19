@@ -674,16 +674,6 @@ int main() {
             return 0;
         }
 
-
-    Book* bk = new Book(1001, "Introduction to Programming","Akshet","98765", to_string(10));
-    Journals* jr = new Journals(2001,"IEEE somemthing on Computers");
-    Publications* pb = new Publications(3001,"The Guardian");
-
-    OtherBorrowing* item_1 = new OtherBorrowing(bk,"Indian Institue of Technology Delhi",currentuser->get_name(),Library::todaysdate());
-    OtherBorrowing* items_2 = new OtherBorrowing(jr,"Indian Institue of Technology kanpur",currentuser->get_name(),Library::todaysdate());
-    OtherBorrowing* items_3 = new OtherBorrowing(pb,"Indian Institue of Technology Mandi",currentuser->get_name(),Library::todaysdate());
-
-
         cout<<"Enter your choice from below options: "<<endl;
 		cout<<"Menu:"<<endl;
         cout<<"1. Add New User"<<endl;
@@ -692,9 +682,6 @@ int main() {
 		cout<<"4. Borrow Library Items"<<endl;
         cout<<"5. show all users"<<endl;
         cout<<"6. Add new Books"<<endl;
-        cout<<"7. Find Items from Other Institute"<<endl;
-        cout<<"8. Borrow Books From Other Universities"<<endl;
-        cout<<"9. Find Each Journal based on the budget"<<endl;
 		cout<<"0 to exit"<<endl;
         cout<<"Enter your Choice: "<<endl;
 		cin>>choice;
@@ -897,82 +884,6 @@ int main() {
                 Book* newbook= library.addnewBooks(author,title,isbn,book, index_book);
                 book[index_book++] =*newbook;
             break; 
-        }
-         case 7 : 
-            {
-                cout<<"Find Items in Other Institue: "<<endl;
-                cout<<"Books"<<endl;
-                cout<<item_1->getBook()->get_details_Book()<<endl;
-                cout<<"Journals"<<endl;
-                cout<<items_2->getJournal()->get_details_Journal()<<endl;
-                cout<<"Publications"<<endl;
-                cout<<items_3->getPublication()->get_details_Publication()<<endl;
-            break; 
-        }
-        case 8 : 
-            {
-                cout<<"Lend Items from other Institute:\n";
-                cout<<"Press 1 if you want to Borrow a Book\n";
-                cout<<"Press 2 if you want to Borrow a Journal\n";
-                cout<<"Press 3 if you want to Borrow a Publication \n";
-                int check_2;
-                cin>>check_2;
-                if (cin.fail()){
-                   throw 505;
-                }
-                if(check_2 ==1){
-                    cout<<"Enter Title of the Book:"<<endl;
-                    string title;
-                    cin.ignore();
-                    getline(cin, title); 
-                    cout<<library.borrow_books_by_title(title,item_1);
-                }
-                else if(check_2 ==3){
-                    cout<<"Enter Title of the Publications:"<<endl;
-                    string title;
-                    cin.ignore();
-                    getline(cin, title); 
-                    cout<<library.borrow_publication_by_title(title,items_3);
-                }
-                else if(check_2 ==2){
-                    cout<<"Enter Title of the Journals:"<<endl;
-                    string title;
-                    cin.ignore();
-                    getline(cin, title); 
-                    cout<<library.borrow_journal_by_title(title,items_2);
-                }else{
-                    cout<<"Please Enter from the above numbers only"<<endl;
-                }
-            break; 
-        }
-        case 9:
-        {
-            Journals* journals_amount  = readCSVFilejournals("journals - journals.csv",true);   
-            string budget;
-            cout<<"Enter you Budget"<<endl;
-            cin>>budget;
-            string jls[100];
-            int count=0;
-           string amount[100];
-            for(int i=0;i<index_journal;i++){
-                if(stoi(journals_amount[i].get_amount())<=stoi(budget)){
-                    jls[i] = journals_amount[i].get_details_Journal();
-                    amount[i] = journals_amount[i].get_amount();
-                    count++;
-                }
-            }
-            cout<<"So journal to subscribe every year: \n";
-            if(jls->size()==0)
-                cout<<"No Journal can be Subscribed for given budget\n";
-            else{
-                int index =0;
-                for(string ele : jls){
-                    cout<<"Amount: "<<amount[index]<<ele;
-                    index++;
-                }
-                cout<<"Total Number of Journals: "<<count<<endl;
-            }
-            break;
         }
             case 0 :
             {
