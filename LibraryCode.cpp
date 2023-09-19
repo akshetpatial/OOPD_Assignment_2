@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <vector>
 #include <string>
 
 using namespace std;
@@ -253,7 +252,8 @@ public:
 class Library {
 
 private:
-    vector<User*> users;
+    User* user2[200];
+    //vector<User*> users;
     string borrower;
     time_t borrow_date;
 
@@ -268,14 +268,19 @@ public:
     return to_string(year) + "-"+ to_string(month) + "-" + to_string(day);
     }
 
- void register_user(const string& username, const string& user_type) {
+ void register_user(const string& username, const string& user_type, int index) {
         User* user = new User(username, user_type);
-        users.push_back(user);
+        //users.push_back(user);
+         if(index < 200) {
+        user2[index++] = user;
+         }else{
+            cout<<"Out of Range: ";
+         }
     }
 
 
     User* find_user(const string& username) {
-        for (User* user : users) {
+        for (User* user : user2) {
             if (user->get_name() == username) {
                 return user;
             }
@@ -283,65 +288,65 @@ public:
         return nullptr;
     }
 
-    void find_all_user() {
-        for (User* user : users) {
-            cout<<"User Name: "<<user->get_name()<<"\nUser Type: "<<user->get_user_type()<<endl;
+    void find_all_user(int index) {
+        for (int i =0;i<index;i++) {
+            cout<<"User Name: "<<user2[i]->get_name()<<"\nUser Type: "<<user2[i]->get_user_type()<<endl;
         }
     }
 
-    string find_books_by_title(string& title,  vector<Book*> data) {
-        for( Book* bk : data){
-            if(bk->get_title()==title){
-                return "->Unique Identifier: "+to_string(bk->get_identifier())+"\n->Count: "+ to_string(bk->get_count()) +"\n->Title: " + title + "\n->Author: "+bk->get_authorname()+"\n->ISBN: " + bk->get_ISBN()+ "\n\n";
+    string find_books_by_title(string& title,  Book* data, int index) {
+        for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                return "->Unique Identifier: "+to_string(data[i].get_identifier())+"\n->Count: "+ to_string(data[i].get_count()) +"\n->Title: " + title + "\n->Author: "+data[i].get_authorname()+"\n->ISBN: " +data[i].get_ISBN()+ "\n\n";
             }
         }
         return "No Book Found with the title: "+ title+"\n";
     }
 
-     string find_books_by_Author(string& author,  vector<Book*> data) {
-        for( Book* bk : data){
-            if(bk->get_authorname()==author){
-                return "->Unique Identifier:: "+to_string(bk->get_identifier())+"\n->Count: "+ to_string(bk->get_count()) +"\n->Title: " + bk->get_title() + "\n->Author: "+bk->get_authorname()+"\n->ISBN: " + bk->get_ISBN()+ "\n\n";
+     string find_books_by_Author(string& author,  Book* data, int index) {
+        for(int i =0;i<index;i++){
+            if(data[i].get_authorname()==author){
+                return "->Unique Identifier:: "+to_string(data[i].get_identifier())+"\n->Count: "+ to_string(data[i].get_count()) +"\n->Title: " + data[i].get_title() + "\n->Author: "+data[i].get_authorname()+"\n->ISBN: " + data[i].get_ISBN()+ "\n\n";
             }
         }
         return "No Book Found with the Author: "+ author+"\n";
     }
 
-     string find_books_by_ISBN(string& ISBN,  vector<Book*> data) {
-        for( Book* bk : data){
-            if(bk->get_ISBN()==ISBN){
-                return "->Unique Identifier: "+to_string(bk->get_identifier())+"\n->Count: "+ to_string(bk->get_count()) +"\n->Title: " + bk->get_title() + "\n->Author: "+bk->get_authorname()+"\n->ISBN: " + bk->get_ISBN()+ "\n\n";
+     string find_books_by_ISBN(string& ISBN,  Book* data, int index) {
+        for(int i =0;i<index;i++){
+            if(data[i].get_ISBN()==ISBN){
+                return "->Unique Identifier: "+to_string(data[i].get_identifier())+"\n->Count: "+ to_string(data[i].get_count()) +"\n->Title: " + data[i].get_title() + "\n->Author: "+data[i].get_authorname()+"\n->ISBN: " + data[i].get_ISBN()+ "\n\n";
             }
         }
         return "No Book Found with ISBN: "+ ISBN+"\n";
     }
 
-     string find_publication_by_title(string& title,  vector<Publications*> data) {
-        for( Publications* bk : data){
-            if(bk->get_title()==title){
-                return "->Unique Identifier: "+to_string(bk->get_identifier())+"\n->Count: "+ to_string(bk->get_count()) +"\n->Title: " + bk->get_title() + "\n\n";
+     string find_publication_by_title(string& title,  Publications* data, int index) {
+        for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                return "->Unique Identifier: "+to_string(data[i].get_identifier())+"\n->Count: "+ to_string(data[i].get_count()) +"\n->Title: " + data[i].get_title() + "\n\n";
             }
         }
         return "No Publications Found with the title: "+ title+"\n";
     }
 
-     string find_journal_by_title(string& title,  vector<Journals*> data) {
-        for( Journals* bk : data){
-            if(bk->get_title()==title){
-                return "->Unique Identifier: "+to_string(bk->get_identifier())+"\n->Count: "+ to_string(bk->get_count()) +"\n->Title: " + bk->get_title() + "\n\n";
+     string find_journal_by_title(string& title,  Journals* data, int index) {
+        for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                return "->Unique Identifier: "+to_string(data[i].get_identifier())+"\n->Count: "+ to_string(data[i].get_count()) +"\n->Title: " + data[i].get_title() + "\n\n";
             }
         }
         return "No Journals Found with title: "+ title+"\n";
     }
 
-    string borrow_books_by_title(string& title,  vector<Book*> data, User* user){
-         for( Book* bk : data){
-            if(bk->get_title()==title){
-                if(bk->get_count()!=0){
+    string borrow_books_by_title(string& title,  Book* data, User* user, int index){
+         for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                if(data[i].get_count()!=0){
                     borrower = user->get_name();
                     borrow_date = time(0);
                     int due_date;
-                    bk->set_count(bk->get_count()-1);
+                   data[i].set_count(data[i].get_count()-1);
                     if(user->get_user_type()=="student"){
                       due_date = 1;
                     }else if(user->get_user_type()=="faculty"){
@@ -349,8 +354,7 @@ public:
                     }else{
                         return " Not a valid User Type";
                     }
-                    cout<<due_date<<endl;
-                return "You have successfully borrowed '" + bk->get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
+                return "You have successfully borrowed '" + data[i].get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
                  }
              }
             //else{
@@ -376,14 +380,14 @@ public:
  return "Sorry! No Item was found.\n";
 }
 
-string borrow_books_by_Author(string& author,  vector<Book*> data, User* user){
-         for( Book* bk : data){
-            if(bk->get_authorname()==author){
-                if(bk->get_count()!=0){
+string borrow_books_by_Author(string& author,  Book* data, User* user, int index){
+         for(int i =0;i<index;i++){
+            if(data[i].get_authorname()==author){
+                if(data[i].get_count()!=0){
                     borrower = user->get_name();
                     borrow_date = time(0);
                     int due_date;
-                    bk->set_count(bk->get_count()-1);
+                    data[i].set_count(data[i].get_count()-1);
                     if(user->get_user_type()=="student"){
                          due_date = 1;
                     }else if(user->get_user_type()=="faculty"){
@@ -391,7 +395,7 @@ string borrow_books_by_Author(string& author,  vector<Book*> data, User* user){
                     }else{
                 return " Not a valid User Type";
                     }
-                return "You have successfully borrowed '" + bk->get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
+                return "You have successfully borrowed '" +data[i].get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
                  }
             }
     }
@@ -399,14 +403,14 @@ string borrow_books_by_Author(string& author,  vector<Book*> data, User* user){
 }
 
 
-string borrow_books_by_ISBN(string& isbn,  vector<Book*> data, User* user){
-         for( Book* bk : data){
-            if(bk->get_ISBN()==isbn){
-                if(bk->get_count()!=0){
+string borrow_books_by_ISBN(string& isbn,  Book* data, User* user, int index){
+         for(int i =0;i<index;i++){
+            if(data[i].get_ISBN()==isbn){
+                if(data[i].get_count()!=0){
                     borrower = user->get_name();
                     borrow_date = time(0);
                     int due_date;
-                    bk->set_count(bk->get_count()-1);
+                    data[i].set_count(data[i].get_count()-1);
                     if(user->get_user_type()=="student"){
                        due_date = 1;
                     }else if(user->get_user_type()=="faculty"){
@@ -414,21 +418,21 @@ string borrow_books_by_ISBN(string& isbn,  vector<Book*> data, User* user){
                     }else{
                 return " Not a valid User Type";
                     }
-               return "You have successfully borrowed '" + bk->get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
+               return "You have successfully borrowed '" + data[i].get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
                  }
             }
     }
     return "Sorry! No Item was found.\n";
 }
 
-string borrow_publication_by_title(string& title,  vector<Publications*> data, User* user){
-         for( Publications* bk : data){
-            if(bk->get_title()==title){
-                if(bk->get_count()!=0){
+string borrow_publication_by_title(string& title,  Publications* data, User* user, int index){
+         for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                if(data[i].get_count()!=0){
                     borrower = user->get_name();
                     borrow_date = time(0);
                     int due_date;
-                    bk->set_count(bk->get_count()-1);
+                    data[i].set_count(data[i].get_count()-1);
                     if(user->get_user_type()=="student"){
                         due_date = 1;
                     }else if(user->get_user_type()=="faculty"){
@@ -436,7 +440,7 @@ string borrow_publication_by_title(string& title,  vector<Publications*> data, U
                     }else{
                 return " Not a valid User Type";
                     }
-                return "You have successfully borrowed '" + bk->get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
+                return "You have successfully borrowed '" + data[i].get_title() + "'. and Due date is "+ to_string(due_date) + " months from "+todaysdate()+"\n";
                 }
             }
     }
@@ -460,14 +464,14 @@ string borrow_publication_by_title(string& title,  OtherBorrowing* bk){
          return "Sorry! No Item was found.\n";
 }
 
-string borrow_journal_by_title(string& title,  vector<Journals*> data, User* user){
-         for( Journals* bk : data){
-            if(bk->get_title()==title){
-                if(bk->get_count()!=0){
+string borrow_journal_by_title(string& title,  Journals* data, User* user, int index){
+         for(int i =0;i<index;i++){
+            if(data[i].get_title()==title){
+                if(data[i].get_count()!=0){
                     borrower = user->get_name();
                     borrow_date = time(0);
                     int due_date;
-                    bk->set_count(bk->get_count()-1);
+                    data[i].set_count(data[i].get_count()-1);
                     if(user->get_user_type()=="student"){
                          due_date = 1;
                     }else if(user->get_user_type()=="faculty"){
@@ -475,7 +479,7 @@ string borrow_journal_by_title(string& title,  vector<Journals*> data, User* use
                     }else{
                 return " Not a valid User Type";
                     }
-                return "You have successfully borrowed '" + bk->get_title() + "'.and Due date is "+ to_string(due_date) + " month/s from "+todaysdate()+"\n";
+                return "You have successfully borrowed '" +data[i].get_title() + "'.and Due date is "+ to_string(due_date) + " month/s from "+todaysdate()+"\n";
                 }
             }
     }
@@ -497,14 +501,14 @@ string borrow_journal_by_title(string& title,  OtherBorrowing* bk){
          return "Sorry! No Item was found.\n";
 }
 
-Book* addnewBooks(string& author,string& title,string& isbn, vector<Book*> book){
-     for( Book* bk : book){
-            if(bk->get_ISBN()==isbn){
+Book* addnewBooks(string& author,string& title,string& isbn, Book* book, int index){
+      for(int i =0;i<index;i++){
+            if(book[i].get_ISBN()==isbn){
                 cout<< "A book with "+isbn+ " is already present in the library: \n";
                 exit(0);
             }
      }
-     Book* bk = book.back();
+     Book* bk = &book[index--];
      int ind = bk->get_identifier() +1;
      Book* book_1 = new Book(ind,author,title,isbn,to_string(1));
     //  book.push_back(book_1);
@@ -514,10 +518,11 @@ Book* addnewBooks(string& author,string& title,string& isbn, vector<Book*> book)
   
 };
 
-vector<Book*> readCSVFileBooks(const string& filename) {
+Book* readCSVFileBooks(const string& filename) {
     Library library;
     Book book;
-    vector<Book*> data;
+    //vector<Book*> data;
+    Book* data= new Book[100];
     ifstream file(filename);
 
     if (!file.is_open()) {
@@ -531,6 +536,7 @@ vector<Book*> readCSVFileBooks(const string& filename) {
     //Skip the first column
     getline(file, line);
 
+    int i=0;
     while (getline(file, line)) {
         istringstream ss(line);
         string title, author, ISBN;
@@ -549,10 +555,10 @@ vector<Book*> readCSVFileBooks(const string& filename) {
         getline(ss, skip, ',');
         getline(ss, title, ',');
          // Dynamically initialing the constructor 
-        Book* item = new Book(identifier, title, author, ISBN, count);
         // cout<< "->Count: "+ to_string(item->get_count()) +"\n->Title: " + item->get_title() + "\n->Author: "+ item->get_authorname()+"\n->ISBN: " +  item->get_ISBN()+ "\n\n";
         // library.add_item(item);
-        data.push_back(item);
+        data[i]= Book(identifier, title, author, ISBN, count);
+        i++;
         identifier++; 
     }
     file.close();
@@ -560,9 +566,9 @@ vector<Book*> readCSVFileBooks(const string& filename) {
 }
 
 
-vector<Publications*> readCSVFilepublications(const string& filename) {
+Publications* readCSVFilepublications(const string& filename) {
 
-    vector<Publications*> data;
+    Publications* data= new Publications[200];
     Library library;
 
     ifstream file(filename);
@@ -577,26 +583,26 @@ vector<Publications*> readCSVFilepublications(const string& filename) {
 
     //Skip the first column
     getline(file, line);
-
+    int i=0;
     while (getline(file, line)) {
         istringstream ss(line);
         string title;
         getline(ss, title, ',');
          // Dynamically initialing the constructor 
-        Publications* item = new Publications(identifier, title);
         // cout<< "->Title: " + item->get_title()+"\n\n";
-        data.push_back(item);
+        data[i]=Publications(identifier, title);
         // library.add_item(item);
         identifier++; 
+        i++;
     }
     file.close();
     return data;
 }
 
 
-vector<Journals*> readCSVFilejournals(const string& filename,bool check) {
+Journals* readCSVFilejournals(const string& filename,bool check) {
 
-    vector<Journals*> data;
+    Journals* data =  new Journals[200];
     Library library;
 
     ifstream file(filename);
@@ -609,7 +615,7 @@ vector<Journals*> readCSVFilejournals(const string& filename,bool check) {
     string line;
     int identifier = 1;
     string amount;
-
+    int i=0;
     while (getline(file, line)) {
         istringstream ss(line);
         string title;
@@ -617,15 +623,14 @@ vector<Journals*> readCSVFilejournals(const string& filename,bool check) {
         getline(ss, amount, ',');
          // Dynamically initialing the constructor 
         if(!check){
-        Journals* item = new Journals(identifier, title);
-        data.push_back(item);
+        data[i] = Journals(identifier, title);
          }else{
-            Journals* item = new Journals(identifier, title,amount);
-        data.push_back(item);
+        data[i] = Journals(identifier, title,amount);
          }
         // cout<< "->Title: " + item->get_title()+"\n\n";
         // library.add_item(item);
         identifier++; 
+        i++;
     }
     file.close();
     return data;
@@ -633,17 +638,22 @@ vector<Journals*> readCSVFilejournals(const string& filename,bool check) {
 
 int main() {
    
-    vector<Publications*> publications  = readCSVFilepublications("master_publications_rank.csv");
-    vector<Book*> book = readCSVFileBooks("goodbooks-10k_master_samples_books.csv");
-    vector<Journals*> journals  = readCSVFilejournals("journals - journals.csv",false);
-    
+    Publications* publications  = readCSVFilepublications("master_publications_rank.csv");
+    Book* book = readCSVFileBooks("goodbooks-10k_master_samples_books.csv");
+    Journals* journals  = readCSVFilejournals("journals - journals.csv",false);
+
+
+    int index_user  = 0 ;
+    int index_book  = 99 ;
+    int index_journal  = 99 ;
+    int index_publication  = 80 ;
+
     Library library;
-    LibraryItem LibraryItem;
-    vector<OtherBorrowing*> loanitems;
+    LibraryItem LibraryItem;;
     // 2 Initial Users
 
-        library.register_user("Akshet","student"); 
-        library.register_user("Aman","faculty"); 
+        library.register_user("Akshet","student",index_user++); 
+        library.register_user("Aman","faculty",index_user++); 
         int choice;
         cout<<"\t\t\t\t\t Library Management System "<<endl;
 		cout<<endl;
@@ -672,10 +682,6 @@ int main() {
     OtherBorrowing* item_1 = new OtherBorrowing(bk,"Indian Institue of Technology Delhi",currentuser->get_name(),Library::todaysdate());
     OtherBorrowing* items_2 = new OtherBorrowing(jr,"Indian Institue of Technology kanpur",currentuser->get_name(),Library::todaysdate());
     OtherBorrowing* items_3 = new OtherBorrowing(pb,"Indian Institue of Technology Mandi",currentuser->get_name(),Library::todaysdate());
-
-        loanitems.push_back(item_1);
-        loanitems.push_back(items_2);
-        loanitems.push_back(items_3);
 
 
         cout<<"Enter your choice from below options: "<<endl;
@@ -708,7 +714,8 @@ int main() {
                     cout<<"User Type: ";
                     string type;
                     cin>>type;
-                    library.register_user(name,type); 
+                    library.register_user(name,type,index_user++);
+                    cout<<"New User Added! "<<endl; 
                     break;
             }
             case 2 : 
@@ -723,18 +730,21 @@ int main() {
                             throw 505;
                         }
                     if(check == 1){
-                       for(Book* ele : book){
-                            cout<<ele->get_details_Book();
-                       }
+                        for( int i =0;i<index_book;i++){
+                            cout<<book[i].get_details_Book();
+                        }
+                    //    for(Book* ele : book){
+                    //         cout<<ele->get_details_Book();
+                    //    }
                     }
                     else if(check == 2){
-                        for(Publications* ele : publications){
-                            cout<<ele->get_details_Publication();
+                        for( int i =0;i<index_publication;i++){
+                            cout<<publications[i].get_details_Publication();
                        }
                     }
                     else if(check == 3){
-                       for(Journals *ele : journals){
-                            cout<<ele->get_details_Journal();
+                       for( int i =0;i<index_journal;i++){
+                            cout<<journals[i].get_details_Journal();
                        }
                     }
                     break;
@@ -765,21 +775,21 @@ int main() {
                             cout<<"Enter the title of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                            cout<<"->Date: "<<Library::todaysdate()<<"\n"<<library.find_books_by_title(title,book);
+                            cout<<"->Date: "<<Library::todaysdate()<<"\n"<<library.find_books_by_title(title,book,index_book);
                         }
                          if(check_1 ==2){
                             string Author;
                             cout<<"Enter the Author of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, Author);
-                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_books_by_Author(Author,book);
+                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_books_by_Author(Author,book, index_book);
                         }
                          if(check_1 ==3){
                             string ISBN;
                             cout<<"Enter the ISBN of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, ISBN);
-                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_books_by_ISBN(ISBN,book);
+                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_books_by_ISBN(ISBN,book, index_book);
                         }
                     }
                     else if(check == 2){
@@ -788,7 +798,7 @@ int main() {
                             cout<<"Enter the title of the Publications: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_publication_by_title(title,publications);
+                            cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_publication_by_title(title,publications,index_publication);
                     }
                     else if(check == 3){
                         cout<<"You want to find a Journals: "<<endl;
@@ -796,7 +806,7 @@ int main() {
                             cout<<"Enter the title of the Journals: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                        cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_journal_by_title(title,journals);
+                        cout<<"->Date: "<<Library::todaysdate()<<" \n"<<library.find_journal_by_title(title,journals,index_journal);
                     }
                     break;
             }
@@ -826,21 +836,21 @@ int main() {
                             cout<<"Enter the title of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                            cout<<library.borrow_books_by_title(title,book,currentuser);
+                            cout<<library.borrow_books_by_title(title,book,currentuser, index_book);
                         }
                          if(check_1 ==2){
                             string Author;
                             cout<<"Enter the Author of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, Author);
-                            cout<<library.borrow_books_by_Author(Author,book,currentuser);
+                            cout<<library.borrow_books_by_Author(Author,book,currentuser, index_book);
                         }
                          if(check_1 ==3){
                             string ISBN;
                             cout<<"Enter the ISBN of the Book: "<<endl;
                             cin.ignore();
                             getline(cin, ISBN);
-                            cout<<library.borrow_books_by_ISBN(ISBN,book,currentuser);
+                            cout<<library.borrow_books_by_ISBN(ISBN,book,currentuser, index_book);
                         }
                     }
                     else if(check == 2){
@@ -849,7 +859,7 @@ int main() {
                             cout<<"Enter the title of the Publications: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                            cout<<library.borrow_publication_by_title(title,publications,currentuser);
+                            cout<<library.borrow_publication_by_title(title,publications,currentuser, index_publication);
                     }
                     else if(check == 3){
                         cout<<"You want to find a Journals: "<<endl;
@@ -857,7 +867,7 @@ int main() {
                             cout<<"Enter the title of the Journals: "<<endl;
                             cin.ignore();
                             getline(cin, title); 
-                        cout<<library.borrow_journal_by_title(title,journals,currentuser);
+                        cout<<library.borrow_journal_by_title(title,journals,currentuser, index_journal);
                     }
                     break;
             }  
@@ -865,7 +875,7 @@ int main() {
             {
             if(currentuser->get_user_type()=="faculty"){
                 cout<<"Total Users: "<<endl;
-                library.find_all_user();
+                library.find_all_user(index_user);
             }else{
                 cout<<"you do not have the permission: "<<endl;
             }
@@ -884,8 +894,8 @@ int main() {
                 cout<<"Enter the ISBN: "<<endl;
                 string isbn;
                 getline(cin, isbn);
-                Book* newbook= library.addnewBooks(author,title,isbn,book);
-                book.push_back(newbook);
+                Book* newbook= library.addnewBooks(author,title,isbn,book, index_book);
+                book[index_book++] =*newbook;
             break; 
         }
          case 7 : 
@@ -937,27 +947,27 @@ int main() {
         }
         case 9:
         {
-            vector<Journals*> journals_amount  = readCSVFilejournals("journals - journals.csv",true);   
+            Journals* journals_amount  = readCSVFilejournals("journals - journals.csv",true);   
             string budget;
             cout<<"Enter you Budget"<<endl;
             cin>>budget;
-            vector<string> jls;
+            string jls[100];
             int count=0;
-            vector<string> amount;
-            for(Journals *ele : journals_amount){
-                if(stoi(ele->get_amount())<=stoi(budget)){
-                    jls.push_back(ele->get_details_Journal());
-                    amount.push_back(ele->get_amount());
+           string amount[100];
+            for(int i=0;i<index_journal;i++){
+                if(stoi(journals_amount[i].get_amount())<=stoi(budget)){
+                    jls[i] = journals_amount[i].get_details_Journal();
+                    amount[i] = journals_amount[i].get_amount();
                     count++;
                 }
             }
             cout<<"So journal to subscribe every year: \n";
-            if(jls.size()==0)
+            if(jls->size()==0)
                 cout<<"No Journal can be Subscribed for given budget\n";
             else{
                 int index =0;
                 for(string ele : jls){
-                    cout<<"Amount: "<<amount.at(index)<<ele;
+                    cout<<"Amount: "<<amount[index]<<ele;
                     index++;
                 }
                 cout<<"Total Number of Journals: "<<count<<endl;
