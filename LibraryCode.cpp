@@ -950,14 +950,15 @@ int main() {
             Journals* journals_amount  = readCSVFilejournals("journals - journals.csv",true);   
             string budget;
             cout<<"Enter you Budget"<<endl;
-            cin>>budget;
+            cin.ignore();
+            getline(cin, budget);
             string jls[100];
             int count=0;
            string amount[100];
             for(int i=0;i<index_journal;i++){
                 if(stoi(journals_amount[i].get_amount())<=stoi(budget)){
-                    jls[i] = journals_amount[i].get_details_Journal();
-                    amount[i] = journals_amount[i].get_amount();
+                    jls[count] = journals_amount[i].get_details_Journal();
+                    amount[count] = journals_amount[i].get_amount();
                     count++;
                 }
             }
@@ -966,8 +967,8 @@ int main() {
                 cout<<"No Journal can be Subscribed for given budget\n";
             else{
                 int index =0;
-                for(string ele : jls){
-                    cout<<"Amount: "<<amount[index]<<ele;
+                for(int i =0;i<count;i++){
+                    cout<<"Amount: "<<amount[i]<<jls[i];
                     index++;
                 }
                 cout<<"Total Number of Journals: "<<count<<endl;
